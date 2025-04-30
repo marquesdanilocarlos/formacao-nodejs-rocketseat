@@ -1,0 +1,17 @@
+{
+  "name": "rocketseat-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/server.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/server.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "tsx": "^4.19.4",
+    "typescript": "^5.5.3"
+  },
+  "private": true
+}
