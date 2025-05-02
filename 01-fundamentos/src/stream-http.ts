@@ -12,10 +12,22 @@ class InvertNumberStream extends Transform {
 //req: Readable Stream
 //res: Writable Stream
 
-const server: Server = http.createServer((req: IncomingMessage, res: ServerResponse) => {
-    req
+const server: Server = http.createServer(async (req: IncomingMessage, res: ServerResponse) => {
+    /*req
         .pipe(new InvertNumberStream())
-        .pipe(res)
+        .pipe(res)*/
+
+    const buffers: Buffer[] = [];
+
+    for await (const chunk of req) {
+        buffers.push(chunk);
+    }
+
+    const fullStreamContent = Buffer.concat(buffers).toString();
+
+    console.log(fullStreamContent);
+
+    res.end(fullStreamContent);
 });
 
 server.listen(4000);
