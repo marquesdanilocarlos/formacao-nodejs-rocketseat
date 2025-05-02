@@ -8,6 +8,7 @@ const server: Server = http.createServer((req: IncomingMessage, res: ServerRespo
     if (method === 'GET' && url === '/users') {
         return res
             .setHeader('Content-Type', 'application/json')
+            .writeHead(200)
             .end(JSON.stringify(users));
     }
 
@@ -17,10 +18,10 @@ const server: Server = http.createServer((req: IncomingMessage, res: ServerRespo
             name: 'Diego',
             email: '5P6mT@example.com'
         });
-        return res.end('Criação de usuários');
+        return res.writeHead(201).end();
     }
 
-    return res.end('Hello World!');
+    return res.writeHead(404).end();
 });
 
 server.listen(3000);
