@@ -1,9 +1,21 @@
 import http, {IncomingMessage, Server, ServerResponse} from 'node:http';
+import Stream from "node:stream";
 
 const users: Array<Object> = [];
 
-const server: Server = http.createServer((req: IncomingMessage, res: ServerResponse): ServerResponse => {
+const server: Server = http.createServer(async (req: IncomingMessage, res: ServerResponse): Promise<Stream> => {
     const  {method, url} = req;
+
+    const buffers: Buffer[] = [];
+    let streamContent = null;
+
+    for await (const chunk of req) {
+        buffers.push(chunk);
+    }
+
+    if (buffers.length) {
+        streamContent = JSON.parse(Buffer.concat(buffers).toString());
+    }
 
     if (method === 'GET' && url === '/users') {
         return res
@@ -13,11 +25,14 @@ const server: Server = http.createServer((req: IncomingMessage, res: ServerRespo
     }
 
     if (method === 'POST' && url === '/users') {
-        users.push({
-            id: 1,
-            name: 'Diego',
-            email: '5P6mT@example.com'
-        });
+        if (streamContent) {
+            const {name, email} = streamContent;
+            users.push({
+                id: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+                name,
+                email
+            });
+        }
         return res.writeHead(201).end();
     }
 
