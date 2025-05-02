@@ -1,4 +1,4 @@
-import {Readable} from "node:stream";
+import {Readable, Writable} from "node:stream";
 
 class OneToHundredStream extends Readable
 {
@@ -18,4 +18,12 @@ class OneToHundredStream extends Readable
     }
 }
 
-new OneToHundredStream().pipe(process.stdout);
+class MultiplyByTenStream extends Writable
+{
+    _write(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
+        console.log(Number(chunk) * 10);
+        callback();
+    }
+}
+
+new OneToHundredStream().pipe(new MultiplyByTenStream());
