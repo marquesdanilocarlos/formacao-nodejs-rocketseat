@@ -1,21 +1,13 @@
 import http, {IncomingMessage, Server, ServerResponse} from 'node:http';
 import Stream from "node:stream";
+import json from "@/middlewares/json";
 
 const users: Array<Object> = [];
 
 const server: Server = http.createServer(async (req: IncomingMessage, res: ServerResponse): Promise<Stream> => {
     const  {method, url} = req;
 
-    const buffers: Buffer[] = [];
-    let streamContent = null;
-
-    for await (const chunk of req) {
-        buffers.push(chunk);
-    }
-
-    if (buffers.length) {
-        streamContent = JSON.parse(Buffer.concat(buffers).toString());
-    }
+    const streamContent = await json(req, res);
 
     if (method === 'GET' && url === '/users') {
         return res
