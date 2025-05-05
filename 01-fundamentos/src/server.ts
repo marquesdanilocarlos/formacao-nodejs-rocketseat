@@ -1,11 +1,13 @@
 import http, {IncomingMessage, Server, ServerResponse} from 'node:http';
 import Stream from "node:stream";
 import json from "@/middlewares/json";
+import Database from "@/database";
 
 const users: Array<Object> = [];
+const database = new Database();
 
 const server: Server = http.createServer(async (req: IncomingMessage, res: ServerResponse): Promise<Stream> => {
-    const  {method, url} = req;
+    const {method, url} = req;
 
     const streamContent = await json(req, res);
 
@@ -13,17 +15,17 @@ const server: Server = http.createServer(async (req: IncomingMessage, res: Serve
         return res
             .setHeader('Content-Type', 'application/json')
             .writeHead(200)
-            .end(JSON.stringify(users));
+            .end(JSON.stringify(database.select('users')));
     }
 
     if (method === 'POST' && url === '/users') {
         if (streamContent) {
             const {name, email} = streamContent;
-            users.push({
+            database.insert('users', {
                 id: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
                 name,
                 email
-            });
+            })
         }
         return res.writeHead(201).end();
     }
