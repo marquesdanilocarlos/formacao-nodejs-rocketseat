@@ -2,8 +2,8 @@ import http, {IncomingMessage, Server, ServerResponse} from 'node:http';
 import Stream from "node:stream";
 import json from "@/middlewares/json";
 import Database from "@/database";
+import {randomUUID} from "node:crypto";
 
-const users: Array<Object> = [];
 const database = new Database();
 
 const server: Server = http.createServer(async (req: IncomingMessage, res: ServerResponse): Promise<Stream> => {
@@ -22,7 +22,7 @@ const server: Server = http.createServer(async (req: IncomingMessage, res: Serve
         if (streamContent) {
             const {name, email} = streamContent;
             database.insert('users', {
-                id: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+                id: randomUUID(),
                 name,
                 email
             })

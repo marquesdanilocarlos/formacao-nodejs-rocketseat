@@ -19,7 +19,6 @@ export default class Database {
     }
 
     #persist() {
-        console.log(this.#dbPath);
         fs.writeFile(this.#dbPath, JSON.stringify(this.#database));
     }
 
