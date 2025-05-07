@@ -6,7 +6,7 @@ interface DB {
 
 export default class Database {
     #database: DB = {};
-    #dbPath: URL  = new URL('../db.json', import.meta.url);
+    #dbPath: URL = new URL('../db.json', import.meta.url);
 
     constructor() {
         fs.readFile(this.#dbPath, 'utf-8').then(data => {
@@ -27,12 +27,12 @@ export default class Database {
     }
 
     insert<K extends keyof DB>(table: K, data: object): object | undefined {
-        if (Array.isArray(this.#database[table])){
+        if (Array.isArray(this.#database[table])) {
             this.#database[table].push(data);
-            return;
+        } else {
+            this.#database[table] = [data];
         }
 
-        this.#database[table] = [data];
         this.#persist();
 
         return data;

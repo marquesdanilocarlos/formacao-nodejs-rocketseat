@@ -1,33 +1,19 @@
 import http, {IncomingMessage, Server, ServerResponse} from 'node:http';
-import Stream from "node:stream";
 import json from "@/middlewares/json";
-import Database from "@/database";
-import {randomUUID} from "node:crypto";
+import routes from "@/routes";
+import {Route} from "@/types/route";
 
-const database = new Database();
-
-const server: Server = http.createServer(async (req: IncomingMessage, res: ServerResponse): Promise<Stream> => {
+const server: Server = http.createServer(async (req: IncomingMessage, res: ServerResponse): Promise<ServerResponse> => {
     const {method, url} = req;
 
-    const streamContent = await json(req, res);
+    await json(req, res);
 
-    if (method === 'GET' && url === '/users') {
-        return res
-            .setHeader('Content-Type', 'application/json')
-            .writeHead(200)
-            .end(JSON.stringify(database.select('users')));
-    }
+    const route: Route | undefined = routes.find(route => {
+        return route.method === method && route.path === url;
+    });
 
-    if (method === 'POST' && url === '/users') {
-        if (streamContent) {
-            const {name, email} = streamContent;
-            database.insert('users', {
-                id: randomUUID(),
-                name,
-                email
-            })
-        }
-        return res.writeHead(201).end();
+    if (route) {
+        return route.handler(req, res);
     }
 
     return res.writeHead(404).end();
