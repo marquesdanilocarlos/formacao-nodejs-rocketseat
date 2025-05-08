@@ -1,9 +1,5 @@
 import fs from 'node:fs/promises';
 
-interface DB {
-    users?: object[];
-}
-
 export default class Database {
     #database: DB = {};
     #dbPath: URL = new URL('../db.json', import.meta.url);
@@ -22,11 +18,11 @@ export default class Database {
         fs.writeFile(this.#dbPath, JSON.stringify(this.#database));
     }
 
-    select<K extends keyof DB>(table: K): object[] {
+    select<T extends keyof DB>(table: T): object[] {
         return this.#database[table] ?? [];
     }
 
-    insert<K extends keyof DB>(table: K, data: object): object | undefined {
+    insert<T extends keyof DB>(table: T, data: UserData): object | undefined {
         if (Array.isArray(this.#database[table])) {
             this.#database[table].push(data);
         } else {
@@ -36,5 +32,14 @@ export default class Database {
         this.#persist();
 
         return data;
+    }
+
+    delete<T extends keyof DB>(table: T, id: string) {
+        const rowIndex: number | undefined = this.#database[table]?.findIndex(row => row.id === id);
+
+        if (rowIndex !== undefined && rowIndex > -1) {
+            this.#database[table]?.splice(rowIndex, 1);
+            this.#persist();
+        }
     }
 }

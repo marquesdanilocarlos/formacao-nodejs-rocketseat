@@ -14,8 +14,7 @@ const server: Server = http.createServer(async (req: IncomingMessage, res: Serve
 
     if (route) {
         const routeParams: RegExpMatchArray | null | undefined = req.url?.match(route.path);
-
-        console.log(routeParams);
+        req.params = {...routeParams};
         return route.handler(req, res);
     }
 

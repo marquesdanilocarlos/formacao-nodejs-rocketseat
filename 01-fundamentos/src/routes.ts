@@ -35,7 +35,9 @@ const routes: Route[] = [
         path: buildRoutePath('/users/:id'),
         method: 'DELETE',
         handler: (req: IncomingMessage, res: ServerResponse): ServerResponse => {
-            return res.writeHead(200).end();
+            const {id} = req.params.groups;
+            database.delete('users', id);
+            return res.writeHead(204).end();
         }
     }
 ];

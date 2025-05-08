@@ -1,0 +1,3 @@
+interface DB {
+    users?: UserData[];
+}

@@ -1,8 +1,15 @@
 declare module 'http' {
     interface IncomingMessage {
-        body?: {
+        body: {
             name: string;
             email: string;
-        } | null;
+        };
+        params: Params
+    }
+
+    interface Params {
+        groups: {
+            id: string
+        }
     }
 }
