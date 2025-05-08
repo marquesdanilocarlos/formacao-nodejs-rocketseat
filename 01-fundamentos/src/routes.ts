@@ -2,12 +2,13 @@ import {IncomingMessage, ServerResponse} from "node:http";
 import Database from "@/database";
 import {randomUUID} from "node:crypto";
 import {Route} from "@/types/route";
+import buildRoutePath from "@/utils/buildRoutePath";
 
 const database = new Database();
 
 const routes: Route[] = [
     {
-        path: '/users',
+        path: buildRoutePath('/users'),
         method: 'GET',
         handler: (req: IncomingMessage, res: ServerResponse): ServerResponse => {
             return res
@@ -17,7 +18,7 @@ const routes: Route[] = [
         }
     },
     {
-        path: '/users',
+        path: buildRoutePath('/users'),
         method: 'POST',
         handler: (req: IncomingMessage, res: ServerResponse): ServerResponse => {
             const {name, email} = req.body;
@@ -28,6 +29,13 @@ const routes: Route[] = [
             })
 
             return res.writeHead(201).end();
+        }
+    },
+    {
+        path: buildRoutePath('/users/:id'),
+        method: 'DELETE',
+        handler: (req: IncomingMessage, res: ServerResponse): ServerResponse => {
+            return res.writeHead(200).end();
         }
     }
 ];
