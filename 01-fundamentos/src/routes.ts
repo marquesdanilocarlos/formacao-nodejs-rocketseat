@@ -11,10 +11,15 @@ const routes: Route[] = [
         path: buildRoutePath('/users'),
         method: 'GET',
         handler: (req: IncomingMessage, res: ServerResponse): ServerResponse => {
+            const {search} = req.query;
+            const users = database.select('users', search ? {
+                name: search,
+                email: search
+            } : null);
             return res
                 .setHeader('Content-Type', 'application/json')
                 .writeHead(200)
-                .end(JSON.stringify(database.select('users')));
+                .end(JSON.stringify(users));
         }
     },
     {

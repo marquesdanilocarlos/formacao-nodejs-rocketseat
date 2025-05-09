@@ -18,8 +18,17 @@ export default class Database {
         fs.writeFile(this.#dbPath, JSON.stringify(this.#database));
     }
 
-    select<T extends keyof DB>(table: T): object[] {
-        return this.#database[table] ?? [];
+    select<T extends keyof DB>(table: T, search?: Partial<UserData> | null): object[] {
+        let data =  this.#database[table] ?? [];
+        if (search) {
+            data = data.filter(row => {
+                return Object.entries(search).some(([key, value]) => {
+                    return row[key].toLowerCase().includes(value.toLowerCase());
+                })
+            });
+        }
+
+        return data;
     }
 
     insert<T extends keyof DB>(table: T, data: UserData): object | undefined {
