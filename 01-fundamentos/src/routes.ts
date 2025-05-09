@@ -39,6 +39,16 @@ const routes: Route[] = [
             database.delete('users', id);
             return res.writeHead(204).end();
         }
+    },
+    {
+        path: buildRoutePath('/users/:id'),
+        method: 'PUT',
+        handler: (req: IncomingMessage, res: ServerResponse): ServerResponse => {
+            const {id} = req.params.groups;
+            const {name, email} = req.body;
+            database.update('users', id, {name, email});
+            return res.writeHead(204).end();
+        }
     }
 ];
 

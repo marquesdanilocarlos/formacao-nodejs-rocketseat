@@ -1,5 +1,5 @@
 interface UserData {
-    id: string;
+    id?: string;
     name: string;
     email: string;
 }

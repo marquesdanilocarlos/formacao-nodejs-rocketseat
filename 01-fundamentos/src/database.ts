@@ -42,4 +42,11 @@ export default class Database {
             this.#persist();
         }
     }
+    update<T extends keyof DB>(table: T, id: string, data: UserData) {
+        const rowIndex: number | undefined = this.#database[table]?.findIndex(row => row.id === id);
+        if (rowIndex !== undefined && rowIndex > -1) {
+            this.#database[table][rowIndex] = {id, ...data};
+            this.#persist();
+        }
+    }
 }
