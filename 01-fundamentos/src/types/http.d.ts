@@ -4,12 +4,12 @@ declare module 'http' {
             name: string;
             email: string;
         };
-        params: Params
+        params: Params,
+        query: {}
     }
 
     interface Params {
-        groups: {
-            id: string
-        }
+        id?: string
+        query?: string
     }
 }

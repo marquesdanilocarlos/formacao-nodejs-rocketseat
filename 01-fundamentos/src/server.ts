@@ -2,6 +2,7 @@ import http, {IncomingMessage, Server, ServerResponse} from 'node:http';
 import json from "@/middlewares/json";
 import routes from "@/routes";
 import {Route} from "@/types/route";
+import extractQueryParams from "@/utils/extractQueryParams";
 
 const server: Server = http.createServer(async (req: IncomingMessage, res: ServerResponse): Promise<ServerResponse> => {
     const {method, url} = req;
@@ -14,7 +15,9 @@ const server: Server = http.createServer(async (req: IncomingMessage, res: Serve
 
     if (route) {
         const routeParams: RegExpMatchArray | null | undefined = req.url?.match(route.path);
-        req.params = {...routeParams};
+        const {query, ...params} = routeParams?.groups;
+        req.params = params;
+        req.query = query ? extractQueryParams(query) : {};
         return route.handler(req, res);
     }
 
