@@ -15,9 +15,14 @@ const server: Server = http.createServer(async (req: IncomingMessage, res: Serve
 
     if (route) {
         const routeParams: RegExpMatchArray | null | undefined = req.url?.match(route.path);
-        const {query, ...params} = routeParams?.groups;
-        req.params = params;
-        req.query = query ? extractQueryParams(query) : {};
+
+        if (routeParams?.groups) {
+
+            const {query, ...params} = routeParams.groups;
+            req.query = query ? extractQueryParams(query) : {};
+            req.params = params;
+        }
+
         return route.handler(req, res);
     }
 

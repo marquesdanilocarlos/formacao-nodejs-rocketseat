@@ -1,7 +1,10 @@
-export default function extractQueryParams(query: string): any {
-    return query.substring(1).split('&').reduce((queryParams, param) => {
-        const [key, value] = param.split('=');
-        queryParams[key] = value;
-        return queryParams;
-    }, {})
+import {QueryString} from "http";
+
+export default function extractQueryParams(query: string): QueryString {
+    return Object.fromEntries(
+        query.substring(1).split("&").map((param) => {
+            const [key, value] = param.split("=");
+            return [key, value];
+        })
+    );
 }

@@ -26,6 +26,11 @@ const routes: Route[] = [
         path: buildRoutePath('/users'),
         method: 'POST',
         handler: (req: IncomingMessage, res: ServerResponse): ServerResponse => {
+
+            if (!req.body) {
+                return res.writeHead(400).end();
+            }
+
             const {name, email} = req.body;
             database.insert('users', {
                 id: randomUUID(),
@@ -40,7 +45,12 @@ const routes: Route[] = [
         path: buildRoutePath('/users/:id'),
         method: 'DELETE',
         handler: (req: IncomingMessage, res: ServerResponse): ServerResponse => {
-            const {id} = req.params.groups;
+
+            if (!req.params?.id) {
+                return res.writeHead(400).end();
+            }
+
+            const {id} = req.params;
             database.delete('users', id);
             return res.writeHead(204).end();
         }
@@ -49,7 +59,12 @@ const routes: Route[] = [
         path: buildRoutePath('/users/:id'),
         method: 'PUT',
         handler: (req: IncomingMessage, res: ServerResponse): ServerResponse => {
-            const {id} = req.params.groups;
+
+            if (!req.params?.id || !req.body) {
+                return res.writeHead(400).end();
+            }
+
+            const {id} = req.params;
             const {name, email} = req.body;
             database.update('users', id, {name, email});
             return res.writeHead(204).end();

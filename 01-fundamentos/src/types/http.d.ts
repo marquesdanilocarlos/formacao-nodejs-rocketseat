@@ -1,15 +1,21 @@
 declare module 'http' {
     interface IncomingMessage {
-        body: {
+        body?: {
             name: string;
             email: string;
-        };
+        } | null;
         params: Params,
-        query: {}
+        query: QueryString
     }
 
     interface Params {
-        id?: string
-        query?: string
+        id?: string;
+        groups?: {
+            query?: string
+        }
+    }
+
+    interface QueryString {
+        search?: string
     }
 }
