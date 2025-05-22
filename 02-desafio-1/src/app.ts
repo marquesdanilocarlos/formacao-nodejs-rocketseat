@@ -1,15 +1,31 @@
 import {IncomingMessage, ServerResponse} from "node:http";
 import json from "@/middlewares/json";
 import routes from "@/routes";
+import extractQueryParams from "@/utils/extractQueryParams";
 
 export default async function (req: IncomingMessage, res: ServerResponse): Promise<ServerResponse> {
     const {method, url} = req;
 
     await json(req, res);
 
-    const route = routes.find(route => {
-        route.method === method && route.path.test(url || '');
+    console.log(method, url);
+
+    const route: Route | undefined = routes.find(route => {
+        return route.method === method && route.path.test(url || '');
     });
 
-    return res.writeHead(200).end(JSON.stringify(req.body));
+    if (!route) {
+        return res.writeHead(404).end();
+    }
+
+    const routeParams: RegExpMatchArray | null | undefined = req.url?.match(route.path);
+
+    if (routeParams?.groups) {
+
+        const {query, ...params} = routeParams.groups;
+        req.query = query ? extractQueryParams(query) : {};
+        req.params = params;
+    }
+
+    return route.handler(req, res);
 };
