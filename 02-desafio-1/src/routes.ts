@@ -24,6 +24,11 @@ const routes: Route[] = [
         method: 'DELETE',
         handler: tasksController.delete
     },
+    {
+        path: buildRoutePath('/tasks/:id'),
+        method: 'PATCH',
+        handler: tasksController.complete
+    },
 ];
 
 export default routes;
