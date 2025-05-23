@@ -1,0 +1,3 @@
+interface DB {
+    tasks?: TaskData[]
+}
