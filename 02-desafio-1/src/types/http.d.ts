@@ -1,6 +1,6 @@
 declare module 'http' {
     interface IncomingMessage {
-        body: object|null,
+        body?: Partial<TaskData>|null,
         query?: QueryString
         params: Params
     }

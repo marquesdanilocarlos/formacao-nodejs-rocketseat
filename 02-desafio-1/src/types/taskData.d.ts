@@ -2,6 +2,6 @@ interface TaskData {
     id: string
     title: string
     description: string
-    completedAt: Date
+    completedAt: Date|null
     updatedAt: Date
 }
