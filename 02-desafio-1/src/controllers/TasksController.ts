@@ -7,7 +7,15 @@ const database = new Database();
 export default class TasksController {
 
     async index(req: IncomingMessage, res: ServerResponse): Promise<void> {
-        res.writeHead(200).end('Listagem de tarefas');
+        const {search} = req.query;
+        const tasks: TaskData[] = database.read('tasks', search ? {
+            title: search,
+            description: search
+        } : undefined);
+
+        res.setHeader('Content-Type', 'application/json')
+            .writeHead(200)
+            .end(JSON.stringify(tasks));
     }
 
     async create(req: IncomingMessage, res: ServerResponse): Promise<ServerResponse> {

@@ -31,8 +31,19 @@ export default class Database {
 
     }
 
-    async read(): Promise<void> {
+    read<T extends keyof DB>(table: T, search?: Partial<TaskData>): TaskData[] {
+        let data = this.#data[table] ?? [];
 
+        if (search) {
+            data = data.filter(row => {
+                return Object.entries(search).some(([key, value]) => {
+                    value = value instanceof String ? value.toLowerCase() : String(value);
+                    return String(row[key as keyof typeof row]).toLowerCase().includes(value);
+                })
+            });
+        }
+
+        return data;
     }
 
     async delete(): Promise<void> {
