@@ -70,7 +70,16 @@ export default class TasksController {
         return res.writeHead(204).end();
     }
 
-    async complete(req: IncomingMessage, res: ServerResponse): Promise<void> {
-        res.writeHead(200).end('Completar tarefa');
+    async complete(req: IncomingMessage, res: ServerResponse): Promise<ServerResponse> {
+        if (!req.params.id) {
+            return res.writeHead(422).end();
+        }
+        const {id} = req.params;
+
+        await database.update('tasks', id, {
+            completedAt: new Date()
+        });
+
+        return res.writeHead(200).end('Completar tarefa');
     }
 }
