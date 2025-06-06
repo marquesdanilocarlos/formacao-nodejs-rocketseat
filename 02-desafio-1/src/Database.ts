@@ -52,7 +52,12 @@ export default class Database {
         return data;
     }
 
-    async delete(): Promise<void> {
+    async delete<T extends keyof DB>(table: T, id: string): Promise<void> {
+        const rowIndex = this.#data[table]?.findIndex(task => task.id === id);
 
+        if (rowIndex != undefined && rowIndex > -1 && Array.isArray(this.#data[table])) {
+            this.#data[table].splice(rowIndex, 1);
+            this.#persist();
+        }
     }
 }

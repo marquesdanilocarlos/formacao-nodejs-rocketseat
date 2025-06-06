@@ -60,8 +60,14 @@ export default class TasksController {
         return res.writeHead(204).end();
     }
 
-    async delete(req: IncomingMessage, res: ServerResponse): Promise<void> {
-        res.writeHead(200).end('Deleção de tarefas');
+    async delete(req: IncomingMessage, res: ServerResponse): Promise<ServerResponse> {
+        if (!req.params.id) {
+            return res.writeHead(422).end();
+        }
+        const {id} = req.params;
+        await database.delete('tasks', id);
+
+        return res.writeHead(204).end();
     }
 
     async complete(req: IncomingMessage, res: ServerResponse): Promise<void> {
