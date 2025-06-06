@@ -8,8 +8,6 @@ export default async function (req: IncomingMessage, res: ServerResponse): Promi
 
     await json(req, res);
 
-    console.log(method, url);
-
     const route: Route | undefined = routes.find(route => {
         return route.method === method && route.path.test(url || '');
     });

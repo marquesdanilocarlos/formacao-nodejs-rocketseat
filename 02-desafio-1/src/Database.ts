@@ -27,8 +27,14 @@ export default class Database {
         await this.#persist();
     }
 
-    async update(): Promise<void> {
+    async update<T extends keyof DB>(table: T, id: string, data: Partial<TaskData>): Promise<void> {
+        const rowIndex: number | undefined = this.#data[table]?.findIndex(task => task.id === id);
 
+        if (rowIndex != undefined && rowIndex > -1 && Array.isArray(this.#data[table])) {
+            let task: TaskData = this.#data[table][rowIndex];
+            this.#data[table][rowIndex] = {...task, ...data};
+            await this.#persist();
+        }
     }
 
     read<T extends keyof DB>(table: T, search?: Partial<TaskData>): TaskData[] {

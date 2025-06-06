@@ -6,14 +6,14 @@ const database = new Database();
 
 export default class TasksController {
 
-    async index(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    async index(req: IncomingMessage, res: ServerResponse): Promise<ServerResponse> {
         const {search} = req.query;
         const tasks: TaskData[] = database.read('tasks', search ? {
             title: search,
             description: search
         } : undefined);
 
-        res.setHeader('Content-Type', 'application/json')
+        return res.setHeader('Content-Type', 'application/json')
             .writeHead(200)
             .end(JSON.stringify(tasks));
     }
@@ -43,8 +43,21 @@ export default class TasksController {
         return res.writeHead(201).end();
     }
 
-    async update(req: IncomingMessage, res: ServerResponse): Promise<void> {
-        res.writeHead(200).end('Atualização de tarefas');
+    async update(req: IncomingMessage, res: ServerResponse): Promise<ServerResponse> {
+        if (!req.params.id || !req.body) {
+            return res.writeHead(422).end();
+        }
+
+        const {id} = req.params;
+        const {title, description} = req.body;
+
+        await database.update('tasks', id, {
+            title,
+            description,
+            updatedAt: new Date()
+        });
+
+        return res.writeHead(204).end();
     }
 
     async delete(req: IncomingMessage, res: ServerResponse): Promise<void> {
