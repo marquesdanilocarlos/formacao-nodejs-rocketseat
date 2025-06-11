@@ -1,0 +1,19 @@
+{
+  "name": "03-api-rest",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "lint": "eslint src --ext .ts --fix"
+  },
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^2.2.2",
+    "@types/node": "^24.0.0",
+    "eslint": "^8.57.1",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "fastify": "^5.3.3"
+  },
+  "type": "module"
+}
