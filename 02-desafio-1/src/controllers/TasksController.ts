@@ -1,6 +1,7 @@
 import {IncomingMessage} from "http";
 import {ServerResponse} from "node:http";
 import Database from "@/Database";
+import importCsv from "@/utils/importCsv";
 
 const database = new Database();
 
@@ -81,5 +82,18 @@ export default class TasksController {
         });
 
         return res.writeHead(200).end('Completar tarefa');
+    }
+
+    async import(req: IncomingMessage, res: ServerResponse): Promise<ServerResponse> {
+        const csvPath = new URL('../../tasks.csv', import.meta.url);
+        try {
+            const tasks: TaskData[] = await importCsv(csvPath);
+            for (const task of tasks) {
+                await database.create('tasks', task);
+            }
+        } catch (e) {
+            return res.writeHead(500).end('Erro ao importar tarefas');
+        }
+        return res.writeHead(200).end('Tarefas importadas com sucesso!');
     }
 }

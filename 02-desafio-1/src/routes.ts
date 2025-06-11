@@ -29,6 +29,11 @@ const routes: Route[] = [
         method: 'PATCH',
         handler: tasksController.complete
     },
+    {
+        path: buildRoutePath('/tasks/import'),
+        method: 'POST',
+        handler: tasksController.import
+    },
 ];
 
 export default routes;
