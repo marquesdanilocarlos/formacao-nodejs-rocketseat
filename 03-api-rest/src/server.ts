@@ -1,5 +1,6 @@
 import fastify from 'fastify';
 import { knexInstance } from '@/database';
+import env from '@/validation/env';
 
 const app = fastify();
 
@@ -11,9 +12,10 @@ app.get('/hello', async () => {
 
   return { transaction };
 });
+
 app
   .listen({
-    port: 3000,
+    port: env.PORT,
   })
   .then(() => {
     console.log('Server is running');
