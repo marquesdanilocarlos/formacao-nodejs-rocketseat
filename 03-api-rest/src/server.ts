@@ -1,17 +1,20 @@
-import fastify from 'fastify'
-import { knexInstance } from '@/database'
+import fastify from 'fastify';
+import { knexInstance } from '@/database';
 
-const app = fastify()
+const app = fastify();
 
 app.get('/hello', async () => {
-  const test = await knexInstance('sqlite_schema').select('*')
-  console.log(test)
-})
+  const transaction = await knexInstance('transactions')
+    .select('*')
+    .where('amount', '>', 100)
+    .groupBy('id');
 
+  return { transaction };
+});
 app
   .listen({
     port: 3000,
   })
   .then(() => {
-    console.log('Server is running')
-  })
+    console.log('Server is running');
+  });
