@@ -1,17 +1,10 @@
-import fastify from 'fastify';
-import { knexInstance } from '@/database';
+import fastify, { FastifyInstance } from 'fastify';
 import env from '@/validation/env';
+import routes from './routes';
 
-const app = fastify();
+const app: FastifyInstance = fastify();
 
-app.get('/hello', async () => {
-  const transaction = await knexInstance('transactions')
-    .select('*')
-    .where('amount', '>', 100)
-    .groupBy('id');
-
-  return { transaction };
-});
+app.register(routes);
 
 app
   .listen({
@@ -20,3 +13,5 @@ app
   .then(() => {
     console.log('Server is running');
   });
+
+export default app;
