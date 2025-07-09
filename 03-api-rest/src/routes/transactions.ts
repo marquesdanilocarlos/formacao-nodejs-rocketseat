@@ -1,56 +1,15 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { z } from 'zod';
-import { knexInstance } from '@/database';
+import { FastifyInstance } from 'fastify';
+import TransactionsController from '@/controllers/Transactions';
+import checkSessionId from '@/middlewares/checkSessionId';
 
 export default async function transactionsRoutes(app: FastifyInstance) {
-  app.get('/', async (request: FastifyRequest, response: FastifyReply) => {
-    const transactions = await knexInstance('transactions').select('*');
+  const transactionsController = new TransactionsController();
 
-    return response.status(200).send(transactions);
-  });
+  app.get('/', { preHandler: [checkSessionId] }, transactionsController.index);
 
-  app.get('/:id', async (request: FastifyRequest, response: FastifyReply) => {
-    const getTransactionParamsSchema = z.object({
-      id: z.string().uuid(),
-    });
+  app.get('/:id', { preHandler: [checkSessionId] }, transactionsController.get);
 
-    const { id } = getTransactionParamsSchema.parse(request.params);
-    const transaction = await knexInstance('transactions').where('id', id).first();
+  app.get('/summary', { preHandler: [checkSessionId] }, transactionsController.summary);
 
-    return response.status(200).send(transaction);
-  });
-
-  app.get('/summary', async (request: FastifyRequest, response: FastifyReply) => {
-    const summary = await knexInstance('transactions').sum('amount', { as: 'amount' }).first();
-
-    return response.status(200).send(summary);
-  });
-
-  app.post('/', async (request: FastifyRequest, response: FastifyReply) => {
-    const createTransactionBodySchema = z.object({
-      title: z.string(),
-      amount: z.number(),
-      type: z.enum(['credit', 'debit']),
-    });
-
-    const { title, amount, type } = createTransactionBodySchema.parse(request.body);
-
-    let sessionId = request.cookies.sessionId;
-
-    if (!sessionId) {
-      sessionId = crypto.randomUUID();
-      response.cookie('sessionId', sessionId, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-      });
-    }
-
-    await knexInstance('transactions').insert({
-      id: crypto.randomUUID(),
-      title,
-      amount: type === 'credit' ? amount : amount * -1,
-    });
-
-    return response.status(201).send();
-  });
+  app.post('/', transactionsController.create);
 }
