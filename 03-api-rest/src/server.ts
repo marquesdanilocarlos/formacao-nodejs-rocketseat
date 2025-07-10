@@ -1,12 +1,5 @@
-import fastify, { FastifyInstance } from 'fastify';
+import app from '@/app';
 import env from '@/validation/env';
-import routes from './routes';
-import fastifyCookie from '@fastify/cookie';
-
-const app: FastifyInstance = fastify();
-
-app.register(routes);
-app.register(fastifyCookie);
 
 app
   .listen({
@@ -15,5 +8,3 @@ app
   .then(() => {
     console.log('Server is running');
   });
-
-export default app;
