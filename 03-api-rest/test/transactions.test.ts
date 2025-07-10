@@ -1,26 +1,26 @@
-import { test, expect, beforeAll, afterAll } from 'vitest';
+import { test, expect, beforeAll, afterAll, describe } from 'vitest';
 import app from '../src/app';
 
-beforeAll(async () => {
-  await app.ready();
-});
-
-afterAll(async () => {
-  await app.close();
-});
-
-test('criar uma transação', async () => {
-  const response = await app.inject({
-    method: 'POST',
-    url: '/transactions',
-    payload: {
-      title: 'New transaction',
-      amount: 5000,
-      type: 'credit',
-    },
+describe('Transactions routes', () => {
+  beforeAll(async () => {
+    await app.ready();
   });
 
-  console.log(response.statusCode);
+  afterAll(async () => {
+    await app.close();
+  });
 
-  expect(response.statusCode).toBe(201);
+  test('create a new transaction', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/transactions',
+      payload: {
+        title: 'New transaction',
+        amount: 5000,
+        type: 'credit',
+      },
+    });
+
+    expect(response.statusCode).toBe(201);
+  });
 });
