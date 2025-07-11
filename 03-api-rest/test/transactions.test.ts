@@ -1,5 +1,6 @@
-import { test, expect, beforeAll, afterAll, describe } from 'vitest';
+import { test, expect, beforeAll, afterAll, describe, beforeEach } from 'vitest';
 import app from '../src/app';
+import { execSync } from 'node:child_process';
 
 describe('Transactions routes', () => {
   beforeAll(async () => {
@@ -8,6 +9,11 @@ describe('Transactions routes', () => {
 
   afterAll(async () => {
     await app.close();
+  });
+
+  beforeEach(async () => {
+    execSync('npm run knex migrate:rollback --all');
+    execSync('npm run knex migrate:latest');
   });
 
   test('create a new transaction', async () => {
@@ -52,8 +58,6 @@ describe('Transactions routes', () => {
         Cookie: sessionCookie,
       },
     });
-
-    console.log(typeof response.body);
 
     expect(response.json()).toEqual(
       expect.arrayContaining([
