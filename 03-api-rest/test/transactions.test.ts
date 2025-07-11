@@ -68,4 +68,99 @@ describe('Transactions routes', () => {
       ])
     );
   });
+
+  test('get a specific transaction', async () => {
+    const createResponse = await app.inject({
+      method: 'POST',
+      url: '/transactions',
+      payload: {
+        title: 'New transaction',
+        amount: 5000,
+        type: 'credit',
+      },
+    });
+
+    const setCookie = createResponse.headers['set-cookie'];
+
+    const sessionCookie = Array.isArray(setCookie)
+      ? setCookie.find((c) => c.startsWith('sessionId='))
+      : setCookie?.startsWith('sessionId=')
+        ? setCookie
+        : undefined;
+
+    expect(sessionCookie).toBeDefined();
+
+    const listResponse = await app.inject({
+      method: 'GET',
+      url: '/transactions',
+      headers: {
+        Cookie: sessionCookie,
+      },
+    });
+
+    const transactionId = listResponse.json()[0].id;
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `/transactions/${transactionId}`,
+      headers: {
+        Cookie: sessionCookie,
+      },
+    });
+
+    expect(response.json()).toEqual(
+      expect.objectContaining({
+        title: 'New transaction',
+        amount: 5000,
+      })
+    );
+  });
+
+  test('summary transactions', async () => {
+    const createResponse = await app.inject({
+      method: 'POST',
+      url: '/transactions',
+      payload: {
+        title: 'New transaction credit',
+        amount: 5000,
+        type: 'credit',
+      },
+    });
+    const setCookie = createResponse.headers['set-cookie'];
+
+    const sessionCookie = Array.isArray(setCookie)
+      ? setCookie.find((c) => c.startsWith('sessionId='))
+      : setCookie?.startsWith('sessionId=')
+        ? setCookie
+        : undefined;
+
+    expect(sessionCookie).toBeDefined();
+
+    const newCreateResponse = await app.inject({
+      method: 'POST',
+      url: '/transactions',
+      payload: {
+        title: 'New transaction debit',
+        amount: 2000,
+        type: 'debit',
+      },
+      headers: {
+        Cookie: sessionCookie,
+      },
+    });
+
+    const response = await app.inject({
+      method: 'GET',
+      url: '/transactions/summary',
+      headers: {
+        Cookie: sessionCookie,
+      },
+    });
+
+    expect(response.json()).toEqual(
+      expect.objectContaining({
+        amount: 3000,
+      })
+    );
+  });
 });
