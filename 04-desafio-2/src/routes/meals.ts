@@ -1,7 +1,12 @@
 import { FastifyInstance } from 'fastify';
+import MealsController from '@/controllers/MealsController';
+
+const mealsController = new MealsController();
 
 export default async function mealsRoutes(app: FastifyInstance) {
-  app.get('/meals', async () => {
-    return { meals: [] };
-  });
+  app.get('/', mealsController.index);
+  app.get('/:id', mealsController.show);
+  app.post('/', mealsController.create);
+  app.put('/:id', mealsController.update);
+  app.delete('/:id', mealsController.delete);
 }
