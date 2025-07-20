@@ -1,4 +1,4 @@
-import * as knex from 'knex';
+import knex from 'knex';
 import env from './validation/env';
 
 export const config = {
@@ -6,6 +6,10 @@ export const config = {
   connection: {
     filename: env.DB_URL,
   },
+  migrations: {
+    directory: './database/migrations',
+  },
+  useNullAsDefault: true,
 };
 
 export const knexInstance = knex(config);
