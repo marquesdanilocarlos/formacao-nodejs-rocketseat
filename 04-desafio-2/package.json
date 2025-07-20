@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "main": "server.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "knex": "node --import tsx ./node_modules/.bin/knex"
   },
   "author": "Danilo Carlos Marques",
   "license": "ISC",
@@ -21,6 +22,8 @@
   "dependencies": {
     "dotenv": "^17.2.0",
     "fastify": "^5.4.0",
+    "knex": "^3.1.0",
+    "sqlite3": "^5.1.7",
     "zod": "^4.0.5"
   }
 }
