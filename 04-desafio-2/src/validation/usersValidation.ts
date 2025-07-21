@@ -1,8 +1,10 @@
 import z from 'zod';
 
-const usersSchema = z.object({
+export const createSchema = z.object({
   name: z.string(),
   email: z.email(),
 });
 
-export default usersSchema;
+export const loginSchema = z.object({
+  email: z.email(),
+});
