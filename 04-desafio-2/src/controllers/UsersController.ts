@@ -3,10 +3,16 @@ import { createSchema, loginSchema } from '@/validation/usersValidation';
 import { knexInstance } from '@/database';
 
 export default class UsersController {
-  async login(request: FastifyRequest, reply: FastifyReply) {
+  async login(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const { email } = loginSchema.parse(request.body);
 
     const user = await knexInstance('users').where('email', email).first();
+
+    if (!user) {
+      return reply.status(400).send({
+        message: 'Usuário não encontrado.',
+      });
+    }
 
     reply.cookie('sessionId', user.id, {
       path: '/',
@@ -16,7 +22,7 @@ export default class UsersController {
     return reply.status(200).send({ id: user.id });
   }
 
-  async create(request: FastifyRequest, reply: FastifyReply) {
+  async create(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const { name, email } = createSchema.parse(request.body);
 
     const [{ id }] = await knexInstance('users')
