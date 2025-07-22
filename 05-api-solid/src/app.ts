@@ -1,5 +1,5 @@
-import fastify, {FastifyInstance} from "fastify";
+import fastify, { FastifyInstance } from 'fastify'
 
-const app: FastifyInstance = fastify();
+const app: FastifyInstance = fastify()
 
-export default app;
+export default app
