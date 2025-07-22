@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { createSchema } from '@/validation/mealsValidation';
+import { createSchema, showSchema } from '@/validation/mealsValidation';
 import { knexInstance } from '@/database';
 
 interface MealRequest {
@@ -41,8 +41,19 @@ export default class MealsController {
     return reply.status(201).send({ id });
   }
 
-  async show() {
-    return { message: 'Detalhes da refeição' };
+  async show(resquest: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const { id } = showSchema.parse(resquest.params);
+
+    const meal = await knexInstance('meals')
+      .where('id', id)
+      .where('user_id', resquest.cookies.sessionId)
+      .first();
+
+    if (!meal) {
+      return reply.status(404).send({ message: 'Refeição nao encontrada.' });
+    }
+
+    return reply.status(200).send(meal);
   }
 
   async update() {

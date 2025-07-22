@@ -6,3 +6,7 @@ export const createSchema = z.object({
   is_diet: z.boolean(),
   user_id: z.uuid(),
 });
+
+export const showSchema = z.object({
+  id: z.uuid(),
+});
