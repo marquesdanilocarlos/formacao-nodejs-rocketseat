@@ -94,4 +94,42 @@ export default class MealsController {
 
     return reply.status(204).send({ message: 'Refeição removida com sucesso.' });
   }
+
+  async summary(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const meals = await knexInstance('meals')
+      .where('user_id', request.cookies.sessionId)
+      .select('*');
+
+    if (!meals) {
+      return reply.status(404).send({ message: 'Nenhuma refeição encontrada.' });
+    }
+
+    const totalMeals = meals.length;
+    const totalDietMeals = meals.filter((meal) => meal.is_diet).length;
+    const totalNotDietMeals = totalMeals - totalDietMeals;
+
+    const { maxSequence } = meals.reduce(
+      (acc, meal) => {
+        if (meal.is_diet === 1) {
+          acc.currentSequence.push(meal);
+
+          if (acc.currentSequence.length > acc.maxSequence.length) {
+            acc.maxSequence = [...acc.currentSequence];
+          }
+        } else {
+          acc.currentSequence = [];
+        }
+
+        return acc;
+      },
+      { currentSequence: [], maxSequence: [] }
+    );
+
+    return reply.status(200).send({
+      totalMeals,
+      totalDietMeals,
+      totalNotDietMeals,
+      maxSequence: maxSequence.length,
+    });
+  }
 }

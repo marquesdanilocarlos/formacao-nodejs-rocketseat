@@ -9,6 +9,7 @@ export default async function mealsRoutes(app: FastifyInstance) {
 
   app.get('/', mealsController.index);
   app.get('/:id', mealsController.show);
+  app.get('/summary', mealsController.summary);
   app.post('/', mealsController.create);
   app.put('/:id', mealsController.update);
   app.delete('/:id', mealsController.delete);
