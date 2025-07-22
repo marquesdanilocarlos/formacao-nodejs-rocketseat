@@ -1,10 +1,9 @@
 import app from "@/app";
-
-const PORT = 3333;
+import {env} from "@/validators/envValidator";
 
 app.listen({
     host: '0.0.0.0',
-    port: PORT
+    port: env.PORT
 }).then(() => {
-    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`🚀 Server is running on port ${env.PORT}`);
 });
