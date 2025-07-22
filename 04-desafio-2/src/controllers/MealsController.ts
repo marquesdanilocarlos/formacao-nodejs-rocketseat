@@ -56,11 +56,21 @@ export default class MealsController {
     return reply.status(200).send(meal);
   }
 
-  async update() {
+  async update(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     return { message: 'Atualização de refeição' };
   }
 
-  async delete() {
-    return { message: 'Deletar refeição' };
+  async delete(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const { id } = showSchema.parse(request.params);
+    const deleted = await knexInstance('meals')
+      .where('id', id)
+      .where('user_id', request.cookies.sessionId)
+      .delete();
+
+    if (!deleted) {
+      return reply.status(401).send({ message: 'Usuário não autorizado a deletar refeição.' });
+    }
+
+    return reply.status(204).send();
   }
 }
