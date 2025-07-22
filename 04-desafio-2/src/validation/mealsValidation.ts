@@ -10,3 +10,9 @@ export const createSchema = z.object({
 export const showSchema = z.object({
   id: z.uuid(),
 });
+
+export const updateSchema = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  is_diet: z.boolean().optional(),
+});

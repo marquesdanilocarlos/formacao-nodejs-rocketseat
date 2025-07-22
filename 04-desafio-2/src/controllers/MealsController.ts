@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { createSchema, showSchema } from '@/validation/mealsValidation';
+import { createSchema, showSchema, updateSchema } from '@/validation/mealsValidation';
 import { knexInstance } from '@/database';
 
 interface MealRequest {
@@ -57,7 +57,28 @@ export default class MealsController {
   }
 
   async update(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    return { message: 'Atualização de refeição' };
+    const requestData = request.body as Partial<MealRequest>;
+    const { id } = showSchema.parse(request.params);
+    const validatedData = updateSchema.parse(requestData);
+
+    const meal = await knexInstance('meals')
+      .where('id', id)
+      .where('user_id', request.cookies.sessionId)
+      .first();
+
+    if (!meal) {
+      return reply.status(404).send({ message: 'Refeição nao encontrada.' });
+    }
+
+    await knexInstance('meals')
+      .where('id', id)
+      .where('user_id', request.cookies.sessionId)
+      .update({
+        ...meal,
+        ...validatedData,
+      });
+
+    return reply.status(200).send({ message: 'Refeição atualizada com sucesso.' });
   }
 
   async delete(request: FastifyRequest, reply: FastifyReply): Promise<void> {
@@ -71,6 +92,6 @@ export default class MealsController {
       return reply.status(401).send({ message: 'Usuário não autorizado a deletar refeição.' });
     }
 
-    return reply.status(204).send();
+    return reply.status(204).send({ message: 'Refeição removida com sucesso.' });
   }
 }
