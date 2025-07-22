@@ -9,8 +9,16 @@ interface MealRequest {
 }
 
 export default class MealsController {
-  async index() {
-    return { message: 'Listagem de refeições' };
+  async index(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const meals = await knexInstance('meals')
+      .where('user_id', request.cookies.sessionId)
+      .select('*');
+
+    if (!meals) {
+      return reply.status(404).send({ message: 'Nenhuma refeição encontrada.' });
+    }
+
+    return reply.status(200).send(meals);
   }
 
   async create(request: FastifyRequest, reply: FastifyReply) {
