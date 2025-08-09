@@ -1,17 +1,16 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { createUserSchema } from '@/validators/usersValidator'
-import prisma from '../../../prisma/prisma'
+import createUseCase from '@/useCases/users/create'
 
 export default class UsersController {
-  async create(request: FastifyRequest, reply: FastifyReply) {
+  async create(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const { name, email, password } = createUserSchema.parse(request.body)
-    await prisma.user.create({
-      data: {
-        name,
-        email,
-        password_hash: password,
-      },
-    })
+
+    try {
+      await createUseCase({ name, email, password })
+    } catch (error) {
+      reply.status(409).send()
+    }
 
     reply.status(201).send()
   }
