@@ -1,5 +1,3 @@
-import * as fastify from 'fastify'
+import Fastify from 'fastify'
 
-export const x = 1
-
-export const app = fastify
+export const app = Fastify()
