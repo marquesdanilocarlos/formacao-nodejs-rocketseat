@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { FastifyReply, FastifyRequest } from 'fastify'
-import UserService from '@/services/UserService'
+import UsersService from '@/services/UsersService'
 
-export default function UserController(userService: UserService) {
+export default function UserController(userService: UsersService) {
   return {
     register: async (
       request: FastifyRequest,
