@@ -1,13 +1,8 @@
 services:
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        PORT: ${PORT}
-        NODE_ENV: ${NODE_ENV}
-    image: nodejs-rocketseat
+    image: node:current-alpine
     container_name: api-solid-nodejs
+    working_dir: /app
     ports:
       - "${PORT}:${PORT}"
     depends_on:
@@ -15,14 +10,13 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: >
-      sh -c "if [ \"$NODE_ENV\" = 'production' ];
-             then npm run build && npm start;
-             else npm run dev;
-             fi"
     environment:
       - NODE_ENV=development
-    restart: always
+    command: >
+      sh -c "npm install &&
+               npx prisma generate &&
+               npx tsx --watch src/server.ts"
+    restart: unless-stopped
 
   postgres:
     image: "bitnami/postgresql:latest"

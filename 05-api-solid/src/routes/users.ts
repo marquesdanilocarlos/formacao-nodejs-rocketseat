@@ -3,6 +3,6 @@ import { FastifyInstance } from 'fastify'
 
 const usersController = new UsersController()
 
-export default function usersRoutes(app: FastifyInstance) {
+export default async function usersRoutes(app: FastifyInstance) {
   app.post('/', usersController.register)
 }

@@ -1,6 +1,8 @@
 import Fastify from 'fastify'
 import routes from '@/routes'
 
-export const app = Fastify()
+const app = Fastify()
 
 app.register(routes)
+
+export default app
