@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import UsersService from '@/services/UsersService'
+import UserExistsError from '@/errors/UserExistsError'
 
 export default function UserController(userService: UsersService) {
   return {
@@ -19,8 +20,11 @@ export default function UserController(userService: UsersService) {
       try {
         await userService.register({ name, email, password })
       } catch (error) {
-        console.log(error)
-        return reply.status(409).send()
+        if (error instanceof UserExistsError) {
+          return reply.status(409).send({ message: error.message })
+        }
+
+        throw error
       }
 
       return reply.status(201).send()

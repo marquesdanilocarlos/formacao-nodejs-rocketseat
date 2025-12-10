@@ -1,5 +1,6 @@
 import { hash } from 'bcryptjs'
 import UsersRepositoryInterface from '@/repositories/UsersRepositoryInterface'
+import UserExistsError from '@/errors/UserExistsError'
 
 interface UserRegisterRequest {
   name: string
@@ -14,7 +15,7 @@ export default class UsersService {
     const userWithSameEmail = await this.userRepository.findByEmail(email)
 
     if (userWithSameEmail) {
-      throw new Error('Email already exists')
+      throw new UserExistsError()
     }
 
     const passwordHash = await hash(password, 6)
