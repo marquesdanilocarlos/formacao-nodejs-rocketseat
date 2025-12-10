@@ -1,6 +1,5 @@
-import prisma from '@/prisma'
 import { hash } from 'bcryptjs'
-import PrismaUsersRepository from '@/repositories/PrismaUsersRepository'
+import UsersRepositoryInterface from '@/repositories/UsersRepositoryInterface'
 
 interface UserRegisterRequest {
   name: string
@@ -9,7 +8,7 @@ interface UserRegisterRequest {
 }
 
 export default class UsersService {
-  constructor(private userRepository: PrismaUsersRepository) {}
+  constructor(private userRepository: UsersRepositoryInterface) {}
 
   async register({ name, email, password }: UserRegisterRequest) {
     const userWithSameEmail = await this.userRepository.findByEmail(email)
