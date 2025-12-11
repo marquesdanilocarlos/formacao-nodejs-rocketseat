@@ -6,13 +6,8 @@ import UserExistsError from '@/errors/UserExistsError'
 
 describe('Register Service', () => {
   it('should be user password hashed on registration', async () => {
-    const usersService = new UsersService({
-      create: (data) => {
-        const usersRepository = new InMemoryUsersRepository()
-        return usersRepository.create(data)
-      },
-      findByEmail: () => Promise.resolve(null),
-    })
+    const usersRepository = new InMemoryUsersRepository()
+    const usersService = new UsersService(usersRepository)
 
     const { user } = await usersService.register({
       name: 'Danilovisk',
@@ -32,12 +27,7 @@ describe('Register Service', () => {
       email,
       password: 'a8df56412',
     }
-    const usersService = new UsersService({
-      create: (data) => {
-        return usersRepository.create(data)
-      },
-      findByEmail: () => usersRepository.findByEmail(email),
-    })
+    const usersService = new UsersService(usersRepository)
 
     await usersService.register(newUser)
 
@@ -47,13 +37,8 @@ describe('Register Service', () => {
   })
 
   it('should be able to register', async () => {
-    const usersService = new UsersService({
-      create: (data) => {
-        const usersRepository = new InMemoryUsersRepository()
-        return usersRepository.create(data)
-      },
-      findByEmail: () => Promise.resolve(null),
-    })
+    const usersRepository = new InMemoryUsersRepository()
+    const usersService = new UsersService(usersRepository)
 
     const { user } = await usersService.register({
       name: 'Danilovisk',
