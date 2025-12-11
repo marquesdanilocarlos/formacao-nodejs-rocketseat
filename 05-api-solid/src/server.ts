@@ -1,5 +1,5 @@
 import app from '@/app'
-import { env } from '@/validation/env'
+import { env } from '@/validations/env'
 
 app
   .listen({

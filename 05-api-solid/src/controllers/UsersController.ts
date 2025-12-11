@@ -1,7 +1,7 @@
-import { z } from 'zod'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import UsersService from '@/services/UsersService'
 import UserExistsError from '@/errors/UserExistsError'
+import { registerBodySchema } from '@/validations/usersValidations'
 
 export default function UserController(userService: UsersService) {
   return {
@@ -9,12 +9,6 @@ export default function UserController(userService: UsersService) {
       request: FastifyRequest,
       reply: FastifyReply,
     ): Promise<void> => {
-      const registerBodySchema = z.object({
-        name: z.string(),
-        email: z.email(),
-        password: z.string().min(6),
-      })
-
       const { name, email, password } = registerBodySchema.parse(request.body)
 
       try {

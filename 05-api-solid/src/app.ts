@@ -1,7 +1,7 @@
 import Fastify from 'fastify'
 import routes from '@/routes'
 import { ZodError } from 'zod'
-import { env } from '@/validation/env'
+import { env } from '@/validations/env'
 
 const app = Fastify()
 
