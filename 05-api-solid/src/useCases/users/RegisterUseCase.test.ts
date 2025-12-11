@@ -34,7 +34,7 @@ describe('Register Service', () => {
 
     await sut.register(newUser)
 
-    expect(async () => {
+    await expect(async () => {
       await sut.register(newUser)
     }).rejects.toBeInstanceOf(UserExistsError)
   })
