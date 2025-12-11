@@ -7,22 +7,26 @@
     "dev": "tsx watch --tsconfig ./tsconfig.json src/server.ts",
     "build": "tsup src --out-dir build",
     "start": "node build/server.js",
-    "lint:fix": "docker compose exec api npx eslint . --fix"
+    "lint:fix": "docker compose exec api npx eslint . --fix",
+    "test": "vitest run",
+    "test:watch": "vitest watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@rocketseat/eslint-config": "2.2.2",
+    "@types/bcryptjs": "2.4.6",
     "@types/node": "24.10.2",
     "@types/pg": "8.15.6",
-    "@types/bcryptjs": "2.4.6",
     "eslint": "8.57.1",
     "prettier": "3.7.4",
     "prisma": "7.1.0",
     "tsup": "8.5.1",
     "tsx": "4.21.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "4.0.15"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.1.0",
