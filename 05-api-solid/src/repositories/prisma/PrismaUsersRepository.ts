@@ -1,5 +1,5 @@
 import prisma from '@/prisma'
-import { UserCreateInput } from '../../generated/prisma/models/User'
+import { UserCreateInput } from '../../../generated/prisma/models/User'
 import UsersRepositoryInterface from '@/repositories/UsersRepositoryInterface'
 
 export default class PrismaUsersRepository implements UsersRepositoryInterface {

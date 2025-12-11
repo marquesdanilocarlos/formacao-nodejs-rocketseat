@@ -1,6 +1,6 @@
 import UsersService from '@/services/UsersService'
 import UserController from '@/controllers/UsersController'
-import PrismaUsersRepository from '@/repositories/PrismaUsersRepository'
+import PrismaUsersRepository from '@/repositories/prisma/PrismaUsersRepository'
 
 export default function UsersFactory() {
   const usersRepository = new PrismaUsersRepository()
