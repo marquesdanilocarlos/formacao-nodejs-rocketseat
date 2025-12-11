@@ -24,4 +24,10 @@ export default class InMemoryUsersRepository implements UsersRepositoryInterface
 
     return user || null
   }
+
+  async findById(id: string) {
+    const user = this.itens.find((item) => item.id === id)
+
+    return user || null
+  }
 }

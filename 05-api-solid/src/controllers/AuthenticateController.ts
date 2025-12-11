@@ -1,10 +1,10 @@
-import AuthenticateService from '@/services/AuthenticateService'
+import AuthenticateUseCase from '@/useCases/authenticate/AuthenticateUseCase'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { authenticateBodySchema } from '@/validations/usersValidations'
 import InvalidCredentialsError from '@/errors/InvalidCredentialsError'
 
 export default function AuthenticateController(
-  authenticateService: AuthenticateService,
+  authenticateService: AuthenticateUseCase,
 ) {
   return {
     authenticate: async (

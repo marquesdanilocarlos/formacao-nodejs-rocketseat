@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import UsersService from '@/services/UsersService'
+import RegisterUseCase from '@/useCases/users/RegisterUseCase'
 import UserExistsError from '@/errors/UserExistsError'
 import { registerBodySchema } from '@/validations/usersValidations'
 
-export default function UserController(userService: UsersService) {
+export default function UserController(userService: RegisterUseCase) {
   return {
     register: async (
       request: FastifyRequest,

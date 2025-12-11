@@ -1,16 +1,16 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-import UsersService from '@/services/UsersService'
+import RegisterUseCase from '@/useCases/users/RegisterUseCase'
 import { compare } from 'bcryptjs'
 import InMemoryUsersRepository from '@/repositories/memory/InMemoryUsersRepository'
 import UserExistsError from '@/errors/UserExistsError'
 
 describe('Register Service', () => {
   let usersRepository: InMemoryUsersRepository
-  let sut: UsersService
+  let sut: RegisterUseCase
 
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
-    sut = new UsersService(usersRepository)
+    sut = new RegisterUseCase(usersRepository)
   })
 
   it('should be user password hashed on registration', async () => {

@@ -1,7 +1,7 @@
 import { hash } from 'bcryptjs'
 import UsersRepositoryInterface from '@/repositories/UsersRepositoryInterface'
 import UserExistsError from '@/errors/UserExistsError'
-import { User } from '../../generated/prisma/client'
+import { User } from '../../../generated/prisma/client'
 
 interface UserRegisterRequest {
   name: string
@@ -13,7 +13,7 @@ interface UserRegisterResponse {
   user: User
 }
 
-export default class UsersService {
+export default class RegisterUseCase {
   constructor(private userRepository: UsersRepositoryInterface) {}
 
   async register({

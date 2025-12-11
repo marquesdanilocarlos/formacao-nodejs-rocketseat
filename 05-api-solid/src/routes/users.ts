@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
-import UsersFactory from '@/factories/UsersFactory'
+import UsersControllerFactory from '@/factories/UsersControllerFactory'
 
-const usersController = UsersFactory()
+const usersController = UsersControllerFactory()
 
 export default async function usersRoutes(app: FastifyInstance) {
   app.post('/', usersController.register)
