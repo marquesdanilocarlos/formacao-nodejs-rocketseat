@@ -9,24 +9,18 @@ export class InMemoryGymsRepository implements GymsRepositoryInterface {
 
   async create(data: GymCreateInput) {
     const gym: Gym = {
-      id: crypto.randomUUID(),
+      id: data.id ?? crypto.randomUUID(),
       title: data.title,
       description: data.description ?? null,
       phone: data.phone ?? null,
       latitude:
         data.latitude instanceof Decimal
           ? data.latitude
-          : Decimal(
-              // @ts-expect-error - Converte para decimal
-              data.latitude,
-            ),
+          : Decimal(data.latitude.toString()),
       longitude:
         data.longitude instanceof Decimal
           ? data.longitude
-          : Decimal(
-              // @ts-expect-error - Converte para decimal
-              data.longitude,
-            ),
+          : Decimal(data.longitude.toString()),
     }
 
     this.itens.push(gym)
