@@ -7,6 +7,7 @@ const envValidator = z.object({
     .default('development'),
   PORT: z.coerce.number().default(3333),
   DATABASE_URL: z.string(),
+  JWT_SECRET: z.string(),
 })
 
 const _env = envValidator.safeParse(process.env)
