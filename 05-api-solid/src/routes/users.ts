@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import UsersController from '@/controllers/UsersController'
+import UsersController from '@/controllers/users.controller'
 
 const usersController = new UsersController()
 

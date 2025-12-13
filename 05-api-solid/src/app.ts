@@ -1,7 +1,7 @@
 import Fastify from 'fastify'
 import routes from '@/routes'
 import { ZodError } from 'zod'
-import { env } from '@/validations/env'
+import { envSchema } from '@/validations/env.validator'
 
 const app = Fastify()
 
@@ -16,7 +16,7 @@ app.setErrorHandler((error, _, reply) => {
     return reply.status(400).send({ errors })
   }
 
-  if (env.NODE_ENV !== 'production') {
+  if (envSchema.NODE_ENV !== 'production') {
     console.error(error)
   } else {
     // TODO: Send error to Sentry

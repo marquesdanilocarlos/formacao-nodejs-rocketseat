@@ -1,9 +1,9 @@
 import app from '@/app'
-import { env } from '@/validations/env'
+import { envSchema } from '@/validations/env.validator'
 
 app
   .listen({
-    port: env.PORT,
+    port: envSchema.PORT,
     host: '0.0.0.0',
   })
   .then(() => {
