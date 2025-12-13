@@ -4,7 +4,7 @@ import InMemoryUsersRepository from '@/repositories/memory/InMemoryUsersReposito
 import AuthenticateUseCase from '@/useCases/authenticate/AuthenticateUseCase'
 import InvalidCredentialsError from '@/errors/InvalidCredentialsError'
 
-describe('Authenticate Service', () => {
+describe('Authenticate Use Case', () => {
   let usersRepository: InMemoryUsersRepository
   let sut: AuthenticateUseCase
 

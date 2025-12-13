@@ -4,7 +4,7 @@ import { compare } from 'bcryptjs'
 import InMemoryUsersRepository from '@/repositories/memory/InMemoryUsersRepository'
 import UserExistsError from '@/errors/UserExistsError'
 
-describe('Register Service', () => {
+describe('Register Use Case', () => {
   let usersRepository: InMemoryUsersRepository
   let sut: RegisterUseCase
 

@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
-import AuthenticateControllerFactory from '@/factories/AuthenticateControllerFactory'
+import AuthenticateController from '@/controllers/AuthenticateController'
 
-const authenticateController = AuthenticateControllerFactory()
+const authenticateController = new AuthenticateController()
 
 export default function authenticateRoutes(app: FastifyInstance) {
   app.post('/', authenticateController.authenticate)

@@ -17,7 +17,7 @@ interface CheckInUseCaseResponse {
   checkIn: CheckIn
 }
 
-export default class CheckInsUseCase {
+export default class DoCheckInUseCase {
   constructor(
     private checkInRepository: CheckInsRepositoryInterface,
     private gymsRepository: GymsRepositoryInterface,
