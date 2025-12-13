@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify'
-import UsersController from '@/controllers/users.controller'
+import RegisterController from '@/controllers/register.controller'
 
-const usersController = new UsersController()
+const registerController = RegisterController
 
 export default async function usersRoutes(app: FastifyInstance) {
-  app.post('/', usersController.register)
+  app.post('/', registerController)
 }
