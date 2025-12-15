@@ -1,18 +1,23 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
+import GetProfileUseCaseFactory from '@/factories/users/get-profile-use-case.factory'
+import ResourceNotFoundError from '@/errors/resource-not-found.error'
 
 export default async function ProfileController(
   request: FastifyRequest,
   reply: FastifyReply,
 ): Promise<void> {
-  await request.jwtVerify()
+  const getProfileUseCase = GetProfileUseCaseFactory()
 
   const userId = request.user.sub
+  const { user } = await getProfileUseCase.execute({ userId })
 
-  reply.status(200).send({
-    userId,
-  })
+  if (!user) {
+    throw new ResourceNotFoundError()
+  }
 
-  return reply.send({
-    message: 'Profile page',
+  const { passwordHash: _, ...userWithoutPassword } = user
+
+  return reply.status(200).send({
+    user: userWithoutPassword,
   })
 }
