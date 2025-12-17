@@ -1,7 +1,7 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { hash } from 'bcryptjs'
 import InMemoryUsersRepository from '@/repositories/memory/in-memory-users.repository'
-import Authenticate from '@/useCases/authenticate/authenticate'
+import Authenticate from '@/use-cases/authenticate/authenticate'
 import InvalidCredentialsError from '@/errors/invalid-credentials.error'
 
 describe('Authenticate Use Case', () => {

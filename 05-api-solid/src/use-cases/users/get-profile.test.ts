@@ -1,7 +1,7 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { hash } from 'bcryptjs'
 import InMemoryUsersRepository from '@/repositories/memory/in-memory-users.repository'
-import GetProfile from '@/useCases/users/get-profile'
+import GetProfile from '@/use-cases/users/get-profile'
 import ResourceNotFoundError from '@/errors/resource-not-found.error'
 
 describe('Get Profile', () => {

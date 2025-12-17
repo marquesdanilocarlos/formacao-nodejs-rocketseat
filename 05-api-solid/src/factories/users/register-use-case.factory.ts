@@ -1,4 +1,4 @@
-import Register from '@/useCases/users/register'
+import Register from '@/use-cases/users/register'
 import PrismaUsersRepository from '@/repositories/prisma/prisma-users.repository'
 
 export default function RegisterUseCaseFactory() {

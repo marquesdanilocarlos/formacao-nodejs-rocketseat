@@ -1,5 +1,5 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-import Register from '@/useCases/users/register'
+import Register from '@/use-cases/users/register'
 import { compare } from 'bcryptjs'
 import InMemoryUsersRepository from '@/repositories/memory/in-memory-users.repository'
 import UserExistsError from '@/errors/user-exists.error'

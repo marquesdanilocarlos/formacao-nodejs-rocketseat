@@ -1,5 +1,5 @@
 import PrismaCheckinsRepository from '@/repositories/prisma/prisma-checkins.repository'
-import GetHistory from '@/useCases/checkIns/get-history'
+import GetHistory from '@/use-cases/checkIns/get-history'
 
 export default function GetHistoryUseCaseFactory() {
   const checkInRepository = new PrismaCheckinsRepository()

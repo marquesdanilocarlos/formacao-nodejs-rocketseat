@@ -1,6 +1,6 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryGymsRepository } from '@/repositories/memory/in-memory-gyms.repository'
-import SearchNearbyGyms from '@/useCases/gyms/search-nearby-gyms'
+import SearchNearbyGyms from '@/use-cases/gyms/search-nearby-gyms'
 
 describe('Search near by gyms Use Case', () => {
   let gymsRepository: InMemoryGymsRepository

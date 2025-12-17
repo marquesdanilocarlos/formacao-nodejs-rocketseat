@@ -1,6 +1,6 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import InMemoryCheckinsRepository from '@/repositories/memory/in-memory-checkins.repository'
-import GetHistory from '@/useCases/checkIns/get-history'
+import GetHistory from '@/use-cases/checkIns/get-history'
 
 describe('Get user history checkins Use Case', () => {
   let checkInsRepository: InMemoryCheckinsRepository

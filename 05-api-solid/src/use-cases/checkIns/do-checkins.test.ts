@@ -1,6 +1,6 @@
 import { expect, describe, it, beforeEach, afterEach, vi } from 'vitest'
 import InMemoryCheckinsRepository from '@/repositories/memory/in-memory-checkins.repository'
-import DoCheckin from '@/useCases/checkIns/do-checkin'
+import DoCheckin from '@/use-cases/checkIns/do-checkin'
 import GymsRepository from '@/repositories/gyms-repository'
 import { InMemoryGymsRepository } from '@/repositories/memory/in-memory-gyms.repository'
 import { Gym } from '../../../generated/prisma/client'

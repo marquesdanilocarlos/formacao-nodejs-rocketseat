@@ -1,5 +1,5 @@
 import PrismaGymsRepository from '@/repositories/prisma/prisma-gyms.repository'
-import SearchNearbyGyms from '@/useCases/gyms/search-nearby-gyms'
+import SearchNearbyGyms from '@/use-cases/gyms/search-nearby-gyms'
 
 export default function SearchNearbyGymsUseCaseFactory() {
   const gymRepository = new PrismaGymsRepository()
