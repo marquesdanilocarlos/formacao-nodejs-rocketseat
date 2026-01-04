@@ -3,11 +3,18 @@ import GymsRepository, {
 } from '@/repositories/gyms-repository'
 import { GymCreateInput } from '../../../generated/prisma/models/Gym'
 import { Gym } from '../../../generated/prisma/client'
-import prisma from '@/prisma'
+import PrismaAbstractRepository from '@/repositories/prisma/prisma-abstract-repository'
 
-export default class PrismaGymsRepository implements GymsRepository {
+export default class PrismaGymsRepository
+  extends PrismaAbstractRepository
+  implements GymsRepository
+{
+  constructor() {
+    super()
+  }
+
   async create(data: GymCreateInput): Promise<Gym> {
-    const gym = await prisma.gym.create({
+    const gym = await this.prisma.gym.create({
       data,
     })
 
@@ -15,7 +22,7 @@ export default class PrismaGymsRepository implements GymsRepository {
   }
 
   async findById(id: string): Promise<Gym | null> {
-    const gym = await prisma.gym.findUnique({
+    const gym = await this.prisma.gym.findUnique({
       where: {
         id,
       },
@@ -28,7 +35,7 @@ export default class PrismaGymsRepository implements GymsRepository {
     userLatitude,
     userLongitude,
   }: FindManyNearbyParams): Promise<Gym[]> {
-    const gyms: Gym[] = await prisma.$queryRaw<Gym[]>`
+    const gyms: Gym[] = await this.prisma.$queryRaw<Gym[]>`
     SELECT * from gyms
     WHERE ( 
       6371 * acos( cos( radians(${userLatitude}) ) * cos( radians( latitude ) ) * 
@@ -40,7 +47,7 @@ export default class PrismaGymsRepository implements GymsRepository {
   }
 
   async searchMany(query: string, page: number): Promise<Gym[]> {
-    const gyms = await prisma.gym.findMany({
+    const gyms = await this.prisma.gym.findMany({
       where: {
         title: {
           contains: query,

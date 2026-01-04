@@ -3,10 +3,18 @@ import { CheckInUncheckedCreateInput } from '../../../generated/prisma/models/Ch
 import prisma from '@/prisma'
 import { CheckIn } from '../../../generated/prisma/client'
 import dayjs from 'dayjs'
+import PrismaAbstractRepository from '@/repositories/prisma/prisma-abstract-repository'
 
-export default class PrismaCheckinsRepository implements CheckinsRepository {
+export default class PrismaCheckinsRepository
+  extends PrismaAbstractRepository
+  implements CheckinsRepository
+{
+  constructor() {
+    super()
+  }
+
   async countByUserId(userId: string) {
-    const count = await prisma.checkIn.count({
+    const count = await this.prisma.checkIn.count({
       where: {
         user_id: userId,
       },
@@ -16,7 +24,7 @@ export default class PrismaCheckinsRepository implements CheckinsRepository {
   }
 
   async create(data: CheckInUncheckedCreateInput) {
-    const checkIn = await prisma.checkIn.create({
+    const checkIn = await this.prisma.checkIn.create({
       data,
     })
 
@@ -24,7 +32,7 @@ export default class PrismaCheckinsRepository implements CheckinsRepository {
   }
 
   async findById(id: string): Promise<CheckIn | null> {
-    const checkIn = await prisma.checkIn.findUnique({
+    const checkIn = await this.prisma.checkIn.findUnique({
       where: {
         id,
       },
@@ -37,7 +45,7 @@ export default class PrismaCheckinsRepository implements CheckinsRepository {
     const startOfDay = dayjs(date).startOf('date').toDate()
     const endOfDay = dayjs(date).endOf('date').toDate()
 
-    const checkIn = await prisma.checkIn.findFirst({
+    const checkIn = await this.prisma.checkIn.findFirst({
       where: {
         user_id: userId,
         createdAt: {
@@ -51,7 +59,7 @@ export default class PrismaCheckinsRepository implements CheckinsRepository {
   }
 
   async findManyByUserId(userId: string, page: number) {
-    const checkIns = await prisma.checkIn.findMany({
+    const checkIns = await this.prisma.checkIn.findMany({
       where: {
         user_id: userId,
       },
@@ -63,7 +71,7 @@ export default class PrismaCheckinsRepository implements CheckinsRepository {
   }
 
   async save(checkIn: CheckIn) {
-    checkIn = await prisma.checkIn.update({
+    checkIn = await this.prisma.checkIn.update({
       where: {
         id: checkIn.id,
       },

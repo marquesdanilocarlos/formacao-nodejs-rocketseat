@@ -1,10 +1,17 @@
-import prisma from '@/prisma'
 import { UserCreateInput } from '../../../generated/prisma/models/User'
 import UsersRepository from '@/repositories/users-repository'
+import PrismaAbstractRepository from '@/repositories/prisma/prisma-abstract-repository'
 
-export default class PrismaUsersRepository implements UsersRepository {
+export default class PrismaUsersRepository
+  extends PrismaAbstractRepository
+  implements UsersRepository
+{
+  constructor() {
+    super()
+  }
+
   async create(data: UserCreateInput) {
-    const user = await prisma.user.create({
+    const user = await this.prisma.user.create({
       data,
     })
 
@@ -12,7 +19,7 @@ export default class PrismaUsersRepository implements UsersRepository {
   }
 
   async findByEmail(email: string) {
-    const user = await prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         email,
       },
@@ -22,7 +29,7 @@ export default class PrismaUsersRepository implements UsersRepository {
   }
 
   async findById(id: string) {
-    const user = await prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         id,
       },

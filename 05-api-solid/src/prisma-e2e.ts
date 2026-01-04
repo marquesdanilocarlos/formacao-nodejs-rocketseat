@@ -1,13 +1,11 @@
 import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient } from '../generated/prisma/client'
+import { PrismaClient } from '../generated-e2e/prisma/client'
 import { envSchema } from '@/validations/env.validator'
 
 const connectionString = process.env.DATABASE_URL ?? envSchema.DATABASE_URL
 
 const adapter = new PrismaPg({ connectionString })
-const prisma = new PrismaClient({
+export const prisma = new PrismaClient({
   adapter,
-  log: envSchema.NODE_ENV === 'development' ? ['query'] : ['error'],
+  log: ['query', 'error'],
 })
-
-export default prisma

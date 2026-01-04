@@ -1,12 +1,10 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import 'dotenv/config'
-
-let app: any
+import app from '@/app'
 
 describe('Register e2e', () => {
   beforeAll(async () => {
-    app = (await import('@/app')).default
     await app.ready()
   })
 

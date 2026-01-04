@@ -3,4 +3,5 @@ build
 .idea
 .env
 /generated/prisma
+/generated-e2e/prisma
 coverage
