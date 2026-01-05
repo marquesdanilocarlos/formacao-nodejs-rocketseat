@@ -6,6 +6,6 @@ export default defineConfig({
   test: {
     name: 'e2e',
     dir: 'src/controllers',
-    environment: './prisma/prisma-test-enviroment.ts',
+    globalSetup: 'prisma/global-setup.ts',
   },
 })
