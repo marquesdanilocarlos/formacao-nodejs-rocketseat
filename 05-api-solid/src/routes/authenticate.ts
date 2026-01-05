@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import AuthenticateController from '@/controllers/authenticate.controller'
+import AuthenticateController from '@/controllers/users/authenticate.controller'
 
 const authenticateController = AuthenticateController
 

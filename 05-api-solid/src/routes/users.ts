@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
-import RegisterController from '@/controllers/register.controller'
-import ProfileController from '@/controllers/profile.controller'
+import RegisterController from '@/controllers/users/register.controller'
+import ProfileController from '@/controllers/users/profile.controller'
 import ensureAuthenticated from '@/middlewares/ensure-authenticated'
 
 const registerController = RegisterController
