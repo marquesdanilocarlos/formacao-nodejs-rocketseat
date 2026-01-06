@@ -16,3 +16,7 @@ export const doCheckinParamsSchema = z.object({
 export const getHisttoryQuerySchema = z.object({
   page: z.coerce.number().min(1).default(1),
 })
+
+export const validateCheckinParamsSchema = z.object({
+  checkInId: z.uuid(),
+})
