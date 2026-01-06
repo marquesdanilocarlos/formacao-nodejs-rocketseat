@@ -12,3 +12,7 @@ export const doCheckinBodySchema = z.object({
 export const doCheckinParamsSchema = z.object({
   gymId: z.uuid(),
 })
+
+export const getHisttoryQuerySchema = z.object({
+  page: z.coerce.number().min(1).default(1),
+})
