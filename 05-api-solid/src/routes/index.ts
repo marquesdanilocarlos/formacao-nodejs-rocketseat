@@ -4,6 +4,7 @@ import authenticateRoutes from '@/routes/authenticate'
 import fastifyJwt from '@fastify/jwt'
 import { envSchema } from '@/validations/env.validator'
 import gymsRoutes from '@/routes/gyms'
+import checkinsRoutes from '@/routes/checkins'
 
 export default function routes(app: FastifyInstance) {
   app.register(fastifyJwt, {
@@ -11,5 +12,6 @@ export default function routes(app: FastifyInstance) {
   })
   app.register(usersRoutes, { prefix: '/users' })
   app.register(authenticateRoutes, { prefix: '/auth' })
-  app.register(gymsRoutes, { prefix: 'gyms' })
+  app.register(gymsRoutes, { prefix: '/gyms' })
+  app.register(checkinsRoutes, { prefix: '/checkins' })
 }
