@@ -39,7 +39,7 @@ export default class PrismaGymsRepository
     SELECT * from gyms
     WHERE ( 
       6371 * acos( cos( radians(${userLatitude}) ) * cos( radians( latitude ) ) * 
-                   cos( radians( userLongitude ) - radians(${userLongitude}) ) + 
+                   cos( radians( longitude ) - radians(${userLongitude}) ) + 
                    sin( radians(${userLatitude}) ) * sin( radians( latitude ) ) ) 
       ) <= 10`
 
