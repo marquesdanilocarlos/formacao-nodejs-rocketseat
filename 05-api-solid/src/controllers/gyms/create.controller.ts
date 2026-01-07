@@ -11,7 +11,7 @@ export default async function CreateController(
 
   const createGymUseCase = CreateGymUseCaseFactory()
 
-  await createGymUseCase.execute({
+  const { gym } = await createGymUseCase.execute({
     title,
     description,
     phone,
@@ -19,5 +19,5 @@ export default async function CreateController(
     longitude,
   })
 
-  return reply.status(201).send()
+  return reply.status(201).send(gym)
 }

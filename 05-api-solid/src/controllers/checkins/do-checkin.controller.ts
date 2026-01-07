@@ -14,12 +14,12 @@ export default async function DoCheckinController(
 
   const doCheckinUseCase = DoCheckinUseCaseFactory()
 
-  await doCheckinUseCase.execute({
+  const checkin = await doCheckinUseCase.execute({
     gymId,
     userId: request.user.sub,
     userLatitude: latitude,
     userLongitude: longitude,
   })
 
-  return reply.status(201).send()
+  return reply.status(201).send(checkin)
 }
