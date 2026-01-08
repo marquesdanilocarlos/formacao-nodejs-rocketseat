@@ -1,0 +1,26 @@
+name: Run unit tests
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  run-unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25'
+          cache: 'npm'
+          cache-dependency-path: ./05-api-solid/package-lock.json
+
+      - name: Install
+        working-directory: ./05-api-solid
+        run: npm ci
+      - name: Run Tests
+        working-directory: ./05-api-solid
+        run: npm run test-unit
