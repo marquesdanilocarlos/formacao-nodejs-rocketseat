@@ -20,7 +20,8 @@ describe('Authenticate e2e', () => {
     }
 
     await request(app.server).post('/users').send(userData)
-    const { name: _, ...authData } = userData
+    const { email, password } = userData
+    const authData = { email, password }
 
     const response = await request(app.server).post('/auth').send(authData)
 
@@ -28,5 +29,36 @@ describe('Authenticate e2e', () => {
     expect(response.body).toEqual({
       token: expect.any(String),
     })
+  })
+
+  it('Should be able to refresh a token', async () => {
+    const userData = {
+      name: 'John Doe to refresh',
+      email: 'john.doe.refresh@example.com',
+      password: '123456',
+    }
+
+    await request(app.server).post('/users').send(userData)
+    const { name: _, ...authData } = userData
+
+    const authResponse = await request(app.server).post('/auth').send(authData)
+
+    const cookies = authResponse.get('Set-Cookie') ?? []
+    expect(cookies.length).toBeGreaterThan(0)
+
+    const cookieHeader = cookies[0].split(';')[0]
+
+    const response = await request(app.server)
+      .patch('/auth/token/refresh')
+      .set('Cookie', cookieHeader)
+      .send()
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toEqual({
+      token: expect.any(String),
+    })
+    expect(response.get('Set-Cookie')).toEqual([
+      expect.stringContaining('refreshToken='),
+    ])
   })
 })

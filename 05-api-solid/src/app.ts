@@ -2,8 +2,23 @@ import Fastify from 'fastify'
 import routes from '@/routes'
 import { ZodError } from 'zod'
 import { envSchema } from '@/validations/env.validator'
+import fastifyJwt from '@fastify/jwt'
+import fastifyCookie from '@fastify/cookie'
 
 const app = Fastify()
+
+app.register(fastifyCookie)
+
+app.register(fastifyJwt, {
+  secret: envSchema.JWT_SECRET,
+  sign: {
+    expiresIn: '10m',
+  },
+  cookie: {
+    cookieName: 'refreshToken',
+    signed: false,
+  },
+})
 
 app.register(routes)
 
